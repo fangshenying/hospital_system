@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ftps>
+	<host>
+		<url>http://192.168.101.150:9220/hospitalData/</url>
+		<address>192.168.101.150</address>
+		<port>21</port>
+		<dir>./hospitalData/</dir>
+		<username>fangsy</username>
+		<password>123456</password>
+	</host>
+	<!--<host>
+		<url>http://192.168.101.150:9220/hospitalData/</url>
+		<address>192.168.101.150</address>
+		<port>21</port>
+		<dir>./hospitalData/</dir>
+		<username>fangsy</username>
+		<password>123456</password>
+	</host>-->
+</ftps>

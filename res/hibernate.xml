@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+http://www.springframework.org/schema/tx 
+http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+http://www.springframework.org/schema/aop 
+http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+">
+	<!-- Spring组件扫描,实现bean的自动载入 -->
+	<context:component-scan base-package="com.ipanel.web.kgbgsys">
+		<!-- 排除Controller组件的扫描 -->
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:db.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass">
+			<value>${ds.driverClassName}</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>${ds.url}</value>
+		</property>
+		<property name="user">
+			<value>${ds.userName}</value>
+		</property>
+		<property name="password">
+			<value>${ds.password}</value>
+		</property>
+		<!--连接池中保留的最小连接数。 -->
+		<property name="minPoolSize">
+			<value>5</value>
+		</property>
+		<!--连接池中保留的最大连接数。Default: 15 -->
+		<property name="maxPoolSize">
+			<value>30</value>
+		</property>
+		<!--初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->
+		<property name="initialPoolSize">
+			<value>10</value>
+		</property>
+		<!--最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->
+		<property name="maxIdleTime">
+			<value>60</value>
+		</property>
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+		<property name="acquireIncrement">
+			<value>5</value>
+		</property>
+		<!--JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。但由于预缓存的statements 属于单个connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素。 
+			如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default: 0 -->
+		<property name="maxStatements">
+			<value>0</value>
+		</property>
+		<!--每60秒检查所有连接池中的空闲连接。Default: 0 -->
+		<property name="idleConnectionTestPeriod">
+			<value>60</value>
+		</property>
+		<!--定义在从数据库获取新连接失败后重复尝试的次数。Default: 30 -->
+		<property name="acquireRetryAttempts">
+			<value>30</value>
+		</property>
+		<!--获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常。但是数据源仍有效 保留，并在下次调用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试 
+			获取连接失败后该数据源将申明已断开并永久关闭。Default: false -->
+		<property name="breakAfterAcquireFailure">
+			<value>true</value>
+		</property>
+		<!--因性能消耗大请只在需要的时候使用它。如果设为true那么在每个connection提交的 时候都将校验其有效性。建议使用idleConnectionTestPeriod或automaticTestTable 
+			等方法来提升连接测试的性能。Default: false -->
+		<property name="testConnectionOnCheckout">
+			<value>false</value>
+		</property>
+		
+		<!--设置为true，异步检测连接的有效性 -->
+		<property name="testConnectionOnCheckin">
+			<value>true</value>
+		</property>
+		
+		<property name="preferredTestQuery" > 
+			<value>SELECT 1</value>
+		</property>
+		
+	</bean>
+	
+	<!-- 配置hibernate 相关属性 -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<!-- 注入连接池 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- hibernate 的相关属性 -->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.dialect">
+				    <!--org.hibernate.dialect.MySQLDialect -->
+				    com.ipanel.web.kgbgsys.utils.MySQLLocalDialect
+				    </prop>
+				<prop key="hibernate.format_sql">true </prop>
+				<!-- 它包含4个属性: * create : 会根据你的model类来生成表,但是每次运行都会删除上一次的表,重新生成表,哪怕2次没有任何改变 
+					* create-drop : 根据model类生成表,但是sessionFactory一关闭,表就自动删除 * update : 最常用的属性，也根据model类生成表,即使表结构改变了,表中的行仍然存在,不会删除以前的行 
+					* validate : 只会和数据库中的表进行比较,不会创建新表,但是会插入新值 -->
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>  
+			</props>
+		</property>		
+		<!-- hibernate 映射文件 设置为自动扫描包目录 -->
+		<property name="packagesToScan">
+			<list>
+				<value>com.ipanel.web.kgbgsys.pojo</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- 开启事务注解 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+
+</beans>
