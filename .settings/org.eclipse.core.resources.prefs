@@ -1,7 +1,7 @@
 eclipse.preferences.version=1
-encoding//res/config.properties=GBK
-encoding//res/db.properties=GBK
-encoding//res/log4j.properties=GBK
+encoding//res/config.properties=UTF-8
+encoding//res/db.properties=UTF-8
+encoding//res/log4j.properties=UTF-8
+encoding//res/quartz.properties=UTF-8
 encoding//src/com/ipanel/web/kgbgsys/common/BaseDataModel.java=UTF-8
 encoding//src/com/ipanel/web/kgbgsys/utils/MD5Util.java=UTF-8
-encoding/<project>=gbk
