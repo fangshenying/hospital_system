@@ -5,3 +5,4 @@ encoding//res/log4j.properties=UTF-8
 encoding//res/quartz.properties=UTF-8
 encoding//src/com/ipanel/web/kgbgsys/common/BaseDataModel.java=UTF-8
 encoding//src/com/ipanel/web/kgbgsys/utils/MD5Util.java=UTF-8
+encoding/<project>=gbk
