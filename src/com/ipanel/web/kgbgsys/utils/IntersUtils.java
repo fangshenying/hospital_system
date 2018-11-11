@@ -28,8 +28,8 @@ public class IntersUtils {
 	public static DepartmentTypeModel getDepartCateList() throws Exception {
 		String requestUlrStr = Conf.GET_DEPART_CATE_LIST;
 		URL url = new URL(requestUlrStr);
-		//--HttpClient httpClient = HttpClient.create(url);
-		HttpClient httpClient = HttpClient.createPorxyClient(url,Conf.PROXY_IP,Integer.parseInt(Conf.PROXY_PORT));
+		HttpClient httpClient = HttpClient.create(url);
+		//--HttpClient httpClient = HttpClient.createPorxyClient(url,Conf.PROXY_IP,Integer.parseInt(Conf.PROXY_PORT));
 		httpClient.setRequestMethod(HttpClient.HTTP_METHOD_GET);
 		String respData = httpClient.execute();
 		if ((respData == null) || ("".equals(respData))) {
@@ -70,8 +70,8 @@ public class IntersUtils {
 		String requestUlrStr = Conf.GET_ALL_DEPART_LIST_OF_CATE + "&id="
 				+ DepartKeys;
 		URL url = new URL(requestUlrStr);
-		//--HttpClient httpClient = HttpClient.create(url);
-		HttpClient httpClient = HttpClient.createPorxyClient(url,Conf.PROXY_IP,Integer.parseInt(Conf.PROXY_PORT));
+		HttpClient httpClient = HttpClient.create(url);
+		//--HttpClient httpClient = HttpClient.createPorxyClient(url,Conf.PROXY_IP,Integer.parseInt(Conf.PROXY_PORT));
 		httpClient.setRequestMethod(HttpClient.HTTP_METHOD_GET);
 		String respData = httpClient.execute();
 		if ((respData == null) || ("".equals(respData))) {
@@ -113,8 +113,8 @@ public class IntersUtils {
 		String requestUlrStr = Conf.GET_ALL_DOCTOR_LIST_OF_DEPART + "&id="
 				+ departId;
 		URL url = new URL(requestUlrStr);
-		//--HttpClient httpClient = HttpClient.create(url);
-		HttpClient httpClient = HttpClient.createPorxyClient(url,Conf.PROXY_IP,Integer.parseInt(Conf.PROXY_PORT));
+		HttpClient httpClient = HttpClient.create(url);
+		//--HttpClient httpClient = HttpClient.createPorxyClient(url,Conf.PROXY_IP,Integer.parseInt(Conf.PROXY_PORT));
 		httpClient.setRequestMethod(HttpClient.HTTP_METHOD_GET);
 		String respData = httpClient.execute();
 		if ((respData == null) || ("".equals(respData))) {

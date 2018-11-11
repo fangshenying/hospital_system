@@ -26,11 +26,11 @@ public class FileUtil {
 		try{
 			//--获取远程图片的输入流对象
 			URL url = new URL(remotePicUrl);
-			//--URLConnection con = url.openConnection();
+			URLConnection con = url.openConnection();
 			//--
-			InetSocketAddress address = new InetSocketAddress(Conf.PROXY_IP, Integer.parseInt(Conf.PROXY_PORT));
-			Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
-			URLConnection con = url.openConnection(proxy);
+			//--InetSocketAddress address = new InetSocketAddress(Conf.PROXY_IP, Integer.parseInt(Conf.PROXY_PORT));
+			//--Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
+			//--URLConnection con = url.openConnection(proxy);
 			//--
 			con.setConnectTimeout(5000);
 			inputStream = con.getInputStream();
